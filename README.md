@@ -1,19 +1,20 @@
 # NestJS with Drizzle ORM
 
-This is an example/starter using the following stack
+This is an example/starter using the following stack:
 * [NestJS](https://docs.nestjs.com/)
   * [Fastity](https://docs.nestjs.com/security/helmet#use-with-fastify)
   * Custom logger ([pino](https://github.com/pinojs/pino) with [pino-pretty](https://github.com/pinojs/pino-pretty))
     * Custom logger with possibility to add request id to the logs
-  * Using [Configuration](https://docs.nestjs.com/techniques/configuration)
+  * Loading and processing environment variables with [Configuration](https://docs.nestjs.com/techniques/configuration)
+  * Tests with [Vitest](https://vitest.dev/)
 * [Drizzle ORM](https://orm.drizzle.team/docs/overview)
   * Multiple schemas
   * Custom logger (with interpolated queries)
-  * Example with reusable DAO
-    * abstract.dao shows a way to have reusable Drizzle ORM queries for some actions
-      * getAll
-      * getById (UUID)
-      * getBySingleKey
+  * Example with reusable [DAO](https://en.wikipedia.org/wiki/Data_access_object)
+    * `abstract.dao` shows a way to abstract some reusable Drizzle ORM queries, e.g.,
+      * **getAll** - get all entries for a specific entity
+      * **getById** - get entries with specific id
+      * **getBySingleKey** - get all entries with a specific value for the given key
 * [PostgresSQL](https://www.postgresql.org/)
 
 It's an attempt (simple and concise) to show how to create **multiple schemas** using **Drizzle ORM**. Currently, Drizzle doesn't provide an easy way to do so.
