@@ -20,6 +20,7 @@
     "paths": {
       "@api/*": ["src/api/*"],
       "@core/*": ["src/core/*"],
+      "@test/*": ["./test/*"]
     }
   }
 }

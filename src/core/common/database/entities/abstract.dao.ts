@@ -5,7 +5,7 @@ import { DatabaseConfig } from '@core/common/database/config/database.config';
 import { PG_CONNECTION } from '@core/common/database/drizzle/pg-connection';
 import { useDynamicSchema } from '@core/common/database/entities/helpers/use-dynamic-schema';
 
-export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends Table, InferEntitySelected> {
+export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends Table, InferEntitySelected, InferEntityInsert> {
   constructor(
     @Inject(PG_CONNECTION) protected readonly db: PostgresJsDatabase<TSchema>,
     private readonly entity: Entity,
@@ -42,6 +42,10 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
   async getOneBySingleKey(key: keyof Entity, value: any, fieldsToSelect: (keyof Entity)[]): Promise<Partial<InferEntitySelected>> {
     const bySingleKey = await this.getBySingleKey(key, value, fieldsToSelect);
     return bySingleKey && bySingleKey.length > 0 ? bySingleKey[0] : null;
+  }
+
+  async insertNewRecord(entity: InferEntityInsert) {
+    return this.db.insert(this.entity).values(entity).returning().execute();
   }
 
   private selectFields(fieldsToSelect: (keyof Entity)[]) {

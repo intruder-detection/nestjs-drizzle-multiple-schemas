@@ -7,3 +7,8 @@ Before running the tests make sure to start the database that will be used for a
 ```bash
 docker compose up
 ```
+
+```bash
+npm run test
+```
+

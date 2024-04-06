@@ -15,8 +15,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "full_name": {
-          "name": "full_name",
+        "name": {
+          "name": "name",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false
@@ -39,7 +39,7 @@
         "name_idx": {
           "name": "name_idx",
           "columns": [
-            "full_name"
+            "name"
           ],
           "isUnique": false
         }

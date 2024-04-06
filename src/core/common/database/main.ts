@@ -16,13 +16,13 @@ async function bootstrap() {
   console.log(allJobs[0]);
 
   const jobId: string = '9a974afa-50da-4b64-88d4-e737a8d7c64c';
-  const byId = await jobsDao.getById(jobId, ['id', 'fullName']);
+  const byId = await jobsDao.getById(jobId, ['id', 'name']);
   console.log(byId);
 
-  const xx = await jobsDao.getOneBySingleKey('id', jobId, ['id', 'fullName']);
+  const xx = await jobsDao.getOneBySingleKey('id', jobId, ['id', 'name']);
   console.log(xx);
 
-  const yy = await jobsDao.getOneById(jobId, ['id', 'fullName']);
+  const yy = await jobsDao.getOneById(jobId, ['id', 'name']);
   console.log(yy);
 }
 

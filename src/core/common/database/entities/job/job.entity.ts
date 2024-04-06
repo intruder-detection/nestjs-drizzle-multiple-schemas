@@ -6,12 +6,13 @@ export const jobs = pgTable(
   'jobs',
   {
     ...WithIdPk,
-    fullName: varchar('full_name', { length: 256 }),
+    name: varchar('name', { length: 256 }),
     ...WithModificationDates,
   },
-  (users) => ({
-    nameIdx: index('name_idx').on(users.fullName),
+  (jobs) => ({
+    nameIdx: index('name_idx').on(jobs.name),
   }),
 );
 
 export type JobEntity = typeof jobs.$inferSelect;
+export type JobEntityInsert = typeof jobs.$inferInsert;
