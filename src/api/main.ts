@@ -9,9 +9,10 @@ async function bootstrap() {
     ...LoggerUtils.defaultFastifyAdapterLogger,
   });
   const app = await NestFactory.create(ApiModule, adapter);
-  app.setGlobalPrefix('api');
   app.enableCors();
-  await app.listen(app.get(ApiConfig).getApiPortNumber);
+  const apiConfig = app.get(ApiConfig);
+  app.setGlobalPrefix(apiConfig.globalPrefix);
+  await app.listen(apiConfig.getApiPortNumber);
 }
 
 void bootstrap();
