@@ -41,3 +41,4 @@ Keep in mind that you should have the container `postgres:16.2-alpine` already d
 
 Let's say you run the previous command 3 times and only changed `DB_SCHEMA_NAME` on those 3 executions (`schema_1`, `schema_2`, `schema_3`), you'd expect (assuming that it run with success everytime) to have the following:
 
+![schemas](./documentation/schemas.png)
