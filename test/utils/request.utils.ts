@@ -33,4 +33,12 @@ export class RequestUtils {
   ): Promise<SuperTestResponse<T>> {
     return RequestUtils.expectSpecificHttpCodeTest(app, endpointProperties, payload, HttpStatus.OK);
   }
+
+  static async performRequestAndExpectStatusCreated<T = any>(
+    app: INestApplication,
+    endpointProperties: EndpointProperties,
+    payload: any,
+  ): Promise<SuperTestResponse<T>> {
+    return RequestUtils.expectSpecificHttpCodeTest(app, endpointProperties, payload, HttpStatus.CREATED);
+  }
 }

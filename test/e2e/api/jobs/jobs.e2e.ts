@@ -12,9 +12,9 @@ describe('Jobs e2e', () => {
 
   describe('Create job', () => {
     it('Should create a job', async () => {
-      await RequestUtils.performRequestAndExpectStatusOK(app, {
+      await RequestUtils.performRequestAndExpectStatusCreated(app, {
         method: HttpMethods.POST,
-        endpoint: '/'
+        endpoint: '/jobs'
       }, {
         jobName: 'Test job name'
       });

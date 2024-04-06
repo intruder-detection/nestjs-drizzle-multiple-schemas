@@ -34,11 +34,12 @@ export class TestUtils {
     const app = await testingModule.createNestApplication<NestFastifyApplication>(adapter);
     app.useLogger(app.get(CustomLoggingService));
     app.enableCors();
-    const apiConfig = app.get(ApiConfig);
-    app.setGlobalPrefix(apiConfig.globalPrefix);
 
     // Init DB
     await this.setupDB(app);
+
+    await app.init();
+    await app.getHttpAdapter().getInstance().ready();
 
     return app;
   }
@@ -48,10 +49,6 @@ export class TestUtils {
       modules = [modules,];
     }
     return await Test.createTestingModule({
-      providers: [
-        ConfigService,
-        ApiConfig,
-      ],
       imports: [
         // Setup for HTTP. TODO: If an example for microservices is added then change to use httpLoggingOptions or microserviceLoggingOptions
         CustomLoggingModule.forRoot(LoggerUtils.httpLoggingOptions()),

@@ -16,6 +16,10 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
     return useDynamicSchema(this.entity, this.dbConfig.schemaName);
   }
 
+  protected get insert() {
+    return useDynamicSchema(this.entity, this.dbConfig.schemaName);
+  }
+
   async getAll() {
     return this.db.select().from(this.from).execute();
   }
@@ -45,7 +49,7 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
   }
 
   async insertNewRecord(entity: InferEntityInsert) {
-    return this.db.insert(this.entity).values(entity).returning().execute();
+    return this.db.insert(this.insert).values(entity).returning().execute();
   }
 
   private selectFields(fieldsToSelect: (keyof Entity)[]) {
