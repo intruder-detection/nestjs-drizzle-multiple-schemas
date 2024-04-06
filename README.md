@@ -2,9 +2,12 @@
 
 This is an example/starter using the following stack
 * NestJS
+  * pino pretty (custom logger)
+  * 
 * Drizzle ORM
+* PostgresSQL
 
-It attempts to show how to create multiple schemas using the same codebase. Drizzle ORM currently doesn't provide an easy way to do so, and as a result, this is an attempt to make it simple and concise.
+This in an attempt (simple and concise) to show how to create multiple schemas using Drizzle ORM. Currently, it doesn't provide an easy way to do so.
 
 Sometimes for testing purposes we want to have the following schemas
 
@@ -26,3 +29,24 @@ You can also find some NesJS goodies in the project
   * getAll
   * getById (UUID)
   * getBySingleKey
+
+## Install
+
+```
+npm i
+```
+
+#  Run 
+
+### Database
+
+```bash
+docker compose up
+```
+
+### Endpoint
+
+```bash
+npm run start
+```
+
