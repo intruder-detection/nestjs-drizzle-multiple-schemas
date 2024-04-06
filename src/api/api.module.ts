@@ -6,6 +6,7 @@ import { LoggerUtils } from '@core/logging/utils/logger.utils';
 import { JobsModule } from '@api/modules/jobs/jobs.module';
 
 @Module({
+  providers: [ApiConfig],
   imports: [
     CustomLoggingModule.forRoot(LoggerUtils.httpLoggingOptions()),
     ConfigModule.forRoot({

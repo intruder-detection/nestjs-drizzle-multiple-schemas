@@ -29,7 +29,7 @@ Sometimes for **testing purposes** we want to have the following schemas
 
 This way, we can run each test against a specific schema, so that, the tests are contained.
 
-This might also be useful for a **multi-tenant** approach. 
+This might also be useful for a **multi-tenant** approach.
 
 ---
 
@@ -39,24 +39,18 @@ This might also be useful for a **multi-tenant** approach.
 npm i
 ```
 
-#  Run 
+#  Run
 
-### Database
-
-```bash
-docker compose up
-```
+## [Quick Start Database and initial migration](./migrations/README.md#quick-start)
 
 ### API
 
 ```bash
-npm run start
+env DB_USER="drizzle-orm" env DB_PASSWORD="pass" env DB_HOST_NAME="localhost" env DB_PORT="5432" env DB_NAME="drizzle-orm" env DB_SCHEMA_NAME="schema_1" npm run start
 ```
-
-### Migrations
-
-See [migrations README](./migrations/README.md)
 
 ---
 
-# [Quick Start](./migrations/README.md#quick-start)
+### Migrations
+
+To have a better understanding about how migrations are set up, please see [migrations README](./migrations/README.md)
