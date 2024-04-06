@@ -2,9 +2,11 @@
 
 This is an example/starter using the following stack
 * NestJS
-  * pino pretty (custom logger)
-  * 
+  * Fastity
+  * pino pretty (with custom logger)
 * Drizzle ORM
+  * Multiple schemas
+  * Custom logger (with interpolated queries)
 * PostgresSQL
 
 This in an attempt (simple and concise) to show how to create multiple schemas using Drizzle ORM. Currently, it doesn't provide an easy way to do so.
