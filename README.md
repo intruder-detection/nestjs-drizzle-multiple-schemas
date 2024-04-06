@@ -1,4 +1,4 @@
-# Drizzle ORM in NestJS
+# NestJS with Drizzle ORM
 
 This is an example/starter using the following stack
 * NestJS
