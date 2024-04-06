@@ -1,0 +1,9 @@
+services:
+  database:
+    image: postgres:16.2-alpine
+    container_name: nestjs-drizzle-multiple-schemas-tests-database
+    environment:
+      POSTGRES_USER: drizzle-orm
+      POSTGRES_PASSWORD: pass
+    ports:
+      - 5432:5432
