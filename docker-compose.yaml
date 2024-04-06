@@ -6,9 +6,9 @@ services:
       retries: 12
       interval: 1s
       timeout: 1s
-      test: [ "CMD-SHELL", "pg_isready -d <USER_NAME> -U <USER_NAME>" ]
+      test: [ "CMD-SHELL", "pg_isready -d drizzle-orm -U drizzle-orm" ]
     environment:
-      POSTGRES_USER: <USER_NAME>
+      POSTGRES_USER: drizzle-orm
       POSTGRES_PASSWORD: pass
     ports:
       - 5432:5432

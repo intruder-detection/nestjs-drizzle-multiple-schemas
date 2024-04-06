@@ -2,7 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { GetJobResponseDto } from '@api/modules/jobs/dtos/get-job-response.dto';
 
-@Controller('weather')
+@Controller('jobs')
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
