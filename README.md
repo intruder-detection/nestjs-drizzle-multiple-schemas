@@ -1,13 +1,15 @@
 # NestJS with Drizzle ORM
 
 This is an example/starter using the following stack
-* NestJS
-  * Fastity
-  * pino pretty (with custom logger)
-* Drizzle ORM
+* `NestJS`
+  * `Fastity`
+  * Custom logger (`pino` with `pino-pretty`)
+    * Custom logger with possibility to add request id to the logs
+  * Using Configuration
+* `Drizzle ORM`
   * Multiple schemas
   * Custom logger (with interpolated queries)
-* PostgresSQL
+* `PostgresSQL`
 
 It's an attempt (simple and concise) to show how to create **multiple schemas** using **Drizzle ORM**. Currently, Drizzle doesn't provide an easy way to do so.
 
@@ -48,7 +50,7 @@ npm i
 docker compose up
 ```
 
-### Endpoint
+### API
 
 ```bash
 npm run start
