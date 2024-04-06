@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import { Config, defineConfig } from 'drizzle-kit';
 import { z } from 'zod';
 
+// TODO: Find a way to load the DatabaseConfig to avoid code duplication
 // NOTICE: This 2 methods were copy-pasted from DatabaseConfig class, since currently drizzle-kit can't deal with decorators
 function validateConfiguration() {
   const envSchema = z.object({

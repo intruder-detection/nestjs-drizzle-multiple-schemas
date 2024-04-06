@@ -10,7 +10,7 @@ This is an example/starter using the following stack
   * Multiple schemas
   * Custom logger (with interpolated queries)
   * Example with reusable DAO
-    * abstract.dao shows a way to have reusable Drizzle ORM queries for some actions that are performed for all actions
+    * abstract.dao shows a way to have reusable Drizzle ORM queries for some actions
       * getAll
       * getById (UUID)
       * getBySingleKey
@@ -48,6 +48,8 @@ npm i
 ```bash
 env DB_USER="drizzle-orm" env DB_PASSWORD="pass" env DB_HOST_NAME="localhost" env DB_PORT="5432" env DB_NAME="drizzle-orm" env DB_SCHEMA_NAME="schema_1" npm run start
 ```
+
+Afterwards, open the following URL http://localhost:7979/api/jobs
 
 ---
 
