@@ -47,16 +47,16 @@ npm i
 docker compose up
 ```
 
-## Migrations
-
-See [migrations README](./migrations/README.md)
-
-
 ### API
 
 ```bash
 npm run start
 ```
 
+### Migrations
 
+See [migrations README](./migrations/README.md)
 
+---
+
+# [Quick Start](./migrations/README.md#quick-start)
