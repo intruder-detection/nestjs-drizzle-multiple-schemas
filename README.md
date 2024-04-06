@@ -9,9 +9,11 @@ This is an example/starter using the following stack
   * Custom logger (with interpolated queries)
 * PostgresSQL
 
-This in an attempt (simple and concise) to show how to create multiple schemas using Drizzle ORM. Currently, it doesn't provide an easy way to do so.
+This in an attempt (simple and concise) to show how to create **multiple schemas** using **Drizzle ORM**. Currently, it (Drizzle) doesn't provide an easy way to do so.
 
-Sometimes for testing purposes we want to have the following schemas
+> Why do we want multiple schemas?
+
+Sometimes for **testing purposes** we want to have the following schemas
 
 * test1
 * test2 
@@ -20,7 +22,7 @@ Sometimes for testing purposes we want to have the following schemas
 
 This way, we can run each test against a specific schema, so that, the tests are contained.
 
-This might also be useful for a multi-tenant approach. 
+This might also be useful for a **multi-tenant** approach. 
 
 ---
 
