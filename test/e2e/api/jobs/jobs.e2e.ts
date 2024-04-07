@@ -68,6 +68,26 @@ describe('Jobs e2e', () => {
     });
   });
 
+  describe('Update job by id', () => {
+    it('Should update a job by id', async () => {
+      const existingJobs = await app.get(JobDao).getAll();
+      expect(existingJobs).toHaveLength(1);
+      const existingJob = existingJobs.at(-1);
+
+      const { body: jobsUpdated } = await RequestUtils.performRequestAndExpectStatusOK<JobResponseDto[]>(app, {
+        method: HttpMethods.PUT,
+        endpoint: `/jobs/${existingJob.id}`,
+      }, {
+        jobName: 'This is a new name for the job',
+      });
+
+      expect(jobsUpdated).toHaveLength(1);
+      const jobUpdated = jobsUpdated.at(-1);
+      expect(jobUpdated.id).toEqual(existingJob.id);
+      expect(jobUpdated.name).toEqual('This is a new name for the job');
+    });
+  });
+
   describe('Delete job by id', () => {
     it('Should delete a job by id', async () => {
       let existingJobs = await app.get(JobDao).getAll();

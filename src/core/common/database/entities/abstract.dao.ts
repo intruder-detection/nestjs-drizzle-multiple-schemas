@@ -45,12 +45,29 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
   }
 
   async insertNewRecord(entity: Partial<InferEntityInsert>): Promise<Partial<InferEntitySelected>> {
-    const insertedRows = await this.db.insert(this.useSchema).values(entity as InferEntityInsert).returning().execute();
-    return Array.isArray(insertedRows) && insertedRows.length === 1 ? insertedRows.at(-1) as Partial<InferEntitySelected> : null;
+    const insertedRows = await this.db
+      .insert(this.useSchema)
+      .values(entity as InferEntityInsert)
+      .returning()
+      .execute();
+    return Array.isArray(insertedRows) && insertedRows.length === 1 ? (insertedRows.at(-1) as Partial<InferEntitySelected>) : null;
   }
 
   async deleteById(id: string) {
     return this.db.delete(this.useSchema).where(eq(this.entity['id'], id)).returning().execute();
+  }
+
+  async updateById(id: string, fieldsToUpdate: Partial<InferEntityInsert>): Promise<Partial<InferEntitySelected>[]> {
+    return (await this.db
+      .update(this.useSchema)
+      .set(fieldsToUpdate as InferEntityInsert)
+      .where(eq(this.entity['id'], id))
+      .returning()
+      .execute()) as Partial<InferEntitySelected>[];
+  }
+
+  async deleteAll() {
+    return this.db.delete(this.useSchema).execute();
   }
 
   private selectFields(fieldsToSelect: (keyof Entity)[]) {

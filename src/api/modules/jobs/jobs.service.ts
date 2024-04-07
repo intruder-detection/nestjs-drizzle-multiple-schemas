@@ -23,4 +23,8 @@ export class JobsService {
   async getById(id: string): Promise<JobEntity> {
     return (await this.jobDao.getOneById(id, ['id', 'createdAt', 'updatedAt', 'name'])) as JobEntity;
   }
+
+  async updateJob(id: string, newName: string): Promise<JobEntityInsert[]> {
+    return this.jobDao.updateById(id, { name: newName })
+  }
 }
