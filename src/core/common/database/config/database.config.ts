@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { z } from 'zod';
 
 @Injectable()
 export class DatabaseConfig {
-  constructor(private configService: ConfigService) {}
-
   get postgresqlConnection(): string {
     return DatabaseConfig.postgresqlConnection;
   }

@@ -21,10 +21,10 @@ import { CustomDrizzleLoggingService } from '@core/logging/custom-logging/custom
     {
       provide: PG_CONNECTION,
       inject: [DatabaseConfig],
-      useFactory: async (config: DatabaseConfig) => {
+      useFactory: async (dbConfig: DatabaseConfig) => {
         // https://orm.drizzle.team/docs/get-started-postgresql#node-postgres
         const pool = new Pool({
-          connectionString: config.postgresqlConnection,
+          connectionString: dbConfig.postgresqlConnection,
         });
         return drizzle(pool, { schema: EntitiesSchema, logger: new CustomDrizzleLoggingService() });
       },
