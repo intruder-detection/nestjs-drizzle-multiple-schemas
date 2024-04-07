@@ -1,4 +1,4 @@
-import { Client } from 'pg';
+import { Client, QueryResultRow } from 'pg';
 import * as schema from '@core/common/database/entities/entities.schema';
 import { sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/pglite/migrator';
@@ -22,5 +22,14 @@ export class DatabaseHelper {
     const db = drizzle(client, { schema });
     await db.execute(sql.raw(`DROP SCHEMA IF EXISTS "${schemaName}" CASCADE;`))
     await client.end();
+  }
+
+  static async hasSchema(connectionString: string, schemaName: string): Promise<boolean> {
+    const client = new Client({ connectionString });
+    await client.connect();
+    const db = drizzle(client, { schema });
+    const res = await db.execute(sql.raw(`SELECT EXISTS (SELECT * FROM PG_CATALOG.PG_NAMESPACE WHERE NSPNAME = '${schemaName}');`));
+    await client.end();
+    return (res.rows.at(-1)! as QueryResultRow).exists;
   }
 }

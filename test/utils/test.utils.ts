@@ -1,4 +1,4 @@
-import { INestApplication, Type } from '@nestjs/common';
+import { DynamicModule, INestApplication, Type } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { LoggerUtils } from '@core/logging/utils/logger.utils';
@@ -11,8 +11,12 @@ export class TestUtils {
   /**
    * Setup the NestJS application with the given modules.
    */
-  static async setupApplication(modules: Type<unknown>[] | Type<unknown>) {
-    let app: INestApplication | null = await this.createTestApp(modules);
+  static async setupHttpContextApplication(modules: Type<unknown>[] | Type<unknown>, customSchemaName?: string) {
+    this.setupTestEnvVariables(customSchemaName)
+    let app: INestApplication | null = await this.createTestApp([
+      CustomLoggingModule.forRoot(LoggerUtils.httpLoggingOptions()),
+      ...(Array.isArray(modules) ? modules : [modules]),
+    ]);
 
     afterAll(async () => {
       await this.teardownApp(app);
@@ -22,7 +26,21 @@ export class TestUtils {
     return app;
   }
 
-  private static async createTestApp(modules: Type<unknown>[] | Type<unknown>) {
+  static setupTestEnvVariables(customSchemaName?: string) {
+    // check test docker-compose for the DB env variables
+    process.env.DB_USER = 'drizzle-orm';
+    process.env.DB_PASSWORD = 'pass';
+    process.env.DB_HOST_NAME = 'localhost';
+    process.env.DB_PORT = '5432';
+    process.env.DB_NAME = 'drizzle-orm';
+    /**
+     * Each schema will have their own unique identifier (test1, test2, etc), allowing each test data to be contained on their own schema.
+     * If you want, you can pass a custom name for your schema
+     */
+    process.env.DB_SCHEMA_NAME = customSchemaName ?? `test${process.env.VITEST_POOL_ID}`;
+  }
+
+  private static async createTestApp(modules: (DynamicModule | Type<unknown>)[]) {
     const testingModule = await this.compileModules(modules);
 
     const adapter = new FastifyAdapter(LoggerUtils.defaultFastifyAdapterLogger);
@@ -40,21 +58,15 @@ export class TestUtils {
     return app;
   }
 
-  private static async compileModules(modules: Type<unknown>[] | Type<unknown>) {
-    if (!Array.isArray(modules)) {
-      modules = [modules];
-    }
+  private static async compileModules(modules: (DynamicModule | Type<unknown>)[]) {
     return await Test.createTestingModule({
-      imports: [
-        // Setup for HTTP. TODO: If an example for microservices is added then change to use httpLoggingOptions or microserviceLoggingOptions
-        CustomLoggingModule.forRoot(LoggerUtils.httpLoggingOptions()),
-        ...modules,
-      ],
+      imports: modules,
     }).compile();
   }
 
   private static async setupDB(): Promise<void> {
-    await DatabaseHelper.runMigrations(`${__dirname}/../../migrations/src`, DatabaseConfig.postgresqlConnection, DatabaseConfig.schemaName);
+    const [connectionString, schemaName] = [DatabaseConfig.postgresqlConnection, DatabaseConfig.schemaName];
+    await DatabaseHelper.runMigrations(`${__dirname}/../../migrations/src`, connectionString, schemaName);
   }
 
   private static async teardownApp(app: INestApplication) {

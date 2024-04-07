@@ -9,7 +9,7 @@ import { JobResponseDto } from '@api/modules/jobs/dtos/job-response.dto';
 describe('Jobs e2e', () => {
   let app: INestApplication;
   beforeAll(async () => {
-    app = await TestUtils.setupApplication([JobsModule]);
+    app = await TestUtils.setupHttpContextApplication([JobsModule]);
   });
 
   function expectedJobResponseDto() {
