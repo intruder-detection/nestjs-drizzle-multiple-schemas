@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { GetJobResponseDto } from '@api/modules/jobs/dtos/get-job-response.dto';
 import { JobEntityInsert } from '@core/common/database/entities/job/job.entity';
@@ -8,8 +8,13 @@ export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
   @Post()
-  async addJob(@Body('jobName') jobName: string): Promise<JobEntityInsert[]> {
+  async addJob(@Body('jobName') jobName: string): Promise<JobEntityInsert> {
     return this.jobsService.addJob(jobName);
+  }
+
+  @Delete(':id')
+  async deleteJob(@Param('id') jobId: string): Promise<void> {
+    return this.jobsService.deleteJob(jobId);
   }
 
   @Get()

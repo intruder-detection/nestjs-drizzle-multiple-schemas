@@ -12,21 +12,17 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
     protected readonly dbConfig: DatabaseConfig,
   ) {}
 
-  protected get from() {
-    return useDynamicSchema(this.entity, this.dbConfig.schemaName);
-  }
-
-  protected get insert() {
+  protected get useSchema() {
     return useDynamicSchema(this.entity, this.dbConfig.schemaName);
   }
 
   async getAll() {
-    return this.db.select().from(this.from).execute();
+    return this.db.select().from(this.useSchema).execute();
   }
 
   async getById(id: string, fieldsToSelect: (keyof Entity)[]): Promise<Partial<InferEntitySelected>[]> {
     const selectedFields = this.selectFields(fieldsToSelect);
-    return this.db.select(selectedFields).from(this.from).where(eq(this.entity['id'], id));
+    return this.db.select(selectedFields).from(this.useSchema).where(eq(this.entity['id'], id));
   }
 
   async getOneById(id: string, fieldsToSelect: (keyof Entity)[]): Promise<Partial<InferEntitySelected>> {
@@ -38,7 +34,7 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
     const selectedFields = this.selectFields(fieldsToSelect);
     return await this.db
       .select(selectedFields)
-      .from(this.from)
+      .from(this.useSchema)
       .where(eq(this.entity[key as string], value))
       .execute();
   }
@@ -48,8 +44,13 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
     return bySingleKey && bySingleKey.length > 0 ? bySingleKey[0] : null;
   }
 
-  async insertNewRecord(entity: InferEntityInsert) {
-    return this.db.insert(this.insert).values(entity).returning().execute();
+  async insertNewRecord(entity: Partial<InferEntityInsert>): Promise<Partial<InferEntitySelected>> {
+    const insertedRows = await this.db.insert(this.useSchema).values(entity as InferEntityInsert).returning().execute();
+    return Array.isArray(insertedRows) && insertedRows.length === 1 ? insertedRows.at(-1) as Partial<InferEntitySelected> : null;
+  }
+
+  async deleteById(id: string) {
+    await this.db.delete(this.useSchema).where(eq(this.entity[id as string], id)).returning().execute();
   }
 
   private selectFields(fieldsToSelect: (keyof Entity)[]) {
