@@ -34,7 +34,8 @@ export class TestUtils {
     app.useLogger(app.get(CustomLoggingService));
     app.enableCors();
 
-    // Init DB
+    // Clean up DB (if exists) and run migrations again for testing
+    await TestUtils.cleanDB(app);
     await this.setupDB(app);
 
     await app.init();
@@ -85,7 +86,7 @@ export class TestUtils {
     });
     await client.connect();
     const db = drizzle(client, { schema });
-    // Makes sure the connection uses the Schema we want
+    // Makes sure the connection uses the DB schema we want
     const schemaName = dbConfig.schemaName;
     await db.execute(sql.raw(`DROP SCHEMA IF EXISTS "${schemaName}" CASCADE;`))
     await client.end();

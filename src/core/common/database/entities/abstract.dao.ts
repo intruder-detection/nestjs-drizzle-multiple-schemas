@@ -50,7 +50,7 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
   }
 
   async deleteById(id: string) {
-    return this.db.delete(this.useSchema).where(eq(this.entity[id as string], id)).returning().execute();
+    return this.db.delete(this.useSchema).where(eq(this.entity['id'], id)).returning().execute();
   }
 
   private selectFields(fieldsToSelect: (keyof Entity)[]) {

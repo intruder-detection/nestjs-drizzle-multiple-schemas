@@ -1,6 +1,6 @@
 import { JobEntity } from '@core/common/database/entities/job/job.entity';
 
-export class GetJobResponseDto implements JobEntity {
+export class JobResponseDto implements JobEntity {
   id: string;
   name: string;
   createdAt: Date;

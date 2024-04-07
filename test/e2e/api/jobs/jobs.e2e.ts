@@ -3,7 +3,8 @@ import { HttpMethods } from '@test/utils/enums/http-methods.enum';
 import { INestApplication } from '@nestjs/common';
 import { TestUtils } from '@test/utils/test.utils';
 import { JobsModule } from '@api/modules/jobs/jobs.module';
-import { JobEntity, JobEntityInsert } from '@core/common/database/entities/job/job.entity';
+import { JobDao } from '@core/common/database/entities/job/job.dao';
+import { JobResponseDto } from '@api/modules/jobs/dtos/job-response.dto';
 
 describe('Jobs e2e', () => {
   let app: INestApplication;
@@ -11,48 +12,79 @@ describe('Jobs e2e', () => {
     app = await TestUtils.setupApplication([JobsModule]);
   });
 
+  function expectedJobResponseDto() {
+    return {
+      id: expect.any(String),
+      name: 'Test job name',
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+    } satisfies Partial<JobResponseDto>;
+  }
+
   describe('Create job', () => {
     it('Should create a job', async () => {
-      const { body } = await RequestUtils.performRequestAndExpectStatusCreated<JobEntity>(app, {
-        method: HttpMethods.POST,
-        endpoint: '/jobs'
-      }, {
-        jobName: 'Test job name'
-      });
+      const { body: createdJob } = await RequestUtils.performRequestAndExpectStatusCreated<JobResponseDto>(
+        app,
+        {
+          method: HttpMethods.POST,
+          endpoint: '/jobs',
+        },
+        {
+          jobName: 'Test job name',
+        },
+      );
 
-      expect(body).toMatchObject({
-        id: expect.any(String),
-        name: 'Test job name',
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-      } satisfies JobEntity)
+      expect(createdJob).toMatchObject(expectedJobResponseDto());
     });
   });
 
   describe('List all jobs', () => {
     it('Should list all jobs', async () => {
-      const { body: existingJobs } = await RequestUtils.performRequestAndExpectStatusOK<JobEntityInsert[]>(app, {
+      const { body: existingJobs } = await RequestUtils.performRequestAndExpectStatusOK<JobResponseDto[]>(app, {
         method: HttpMethods.GET,
-        endpoint: '/jobs'
+        endpoint: '/jobs',
       });
 
       expect(existingJobs).toHaveLength(1);
 
       for (const job of existingJobs) {
-        expect(job).toMatchObject({
-          id: expect.any(String),
-          name: 'Test job name',
-          createdAt: expect.any(String),
-          updatedAt: expect.any(String),
-        } satisfies JobEntity)
+        expect(job).toMatchObject(expectedJobResponseDto());
       }
     });
   });
 
   describe('Get job by id', () => {
+    it('Should get a job by id', async () => {
+      const existingJobs = await app.get(JobDao).getAll();
+      expect(existingJobs).toHaveLength(1);
+      const existingJob = existingJobs.at(-1);
 
+      const { body: jobRetrieved } = await RequestUtils.performRequestAndExpectStatusOK<JobResponseDto>(app, {
+        method: HttpMethods.GET,
+        endpoint: `/jobs/${existingJob.id}`,
+      });
+
+      expect(jobRetrieved.id).toEqual(existingJob.id);
+    });
   });
 
   describe('Delete job by id', () => {
+    it('Should delete a job by id', async () => {
+      let existingJobs = await app.get(JobDao).getAll();
+      expect(existingJobs).toHaveLength(1);
+      const existingJob = existingJobs.at(-1);
+
+      const { body: jobsDeleted } = await RequestUtils.performRequestAndExpectStatusOK<JobResponseDto[]>(app, {
+        method: HttpMethods.DELETE,
+        endpoint: `/jobs/${existingJob.id}`,
+      });
+
+      expect(jobsDeleted).toHaveLength(1);
+      const jobDeleted = jobsDeleted.at(-1);
+      expect(jobDeleted.id).toEqual(existingJob.id);
+
+      existingJobs = await app.get(JobDao).getAll();
+      expect(existingJobs).toHaveLength(0);
+    });
   });
 });
