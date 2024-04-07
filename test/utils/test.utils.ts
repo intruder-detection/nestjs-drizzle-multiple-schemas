@@ -34,7 +34,7 @@ export class TestUtils {
     app.useLogger(app.get(CustomLoggingService));
     app.enableCors();
 
-    // Clean up DB (if exists) and run migrations again for testing
+    // Clean up DB (if exists) and run recreate it (running migrations)
     await TestUtils.cleanDB(app);
     await this.setupDB(app);
 
