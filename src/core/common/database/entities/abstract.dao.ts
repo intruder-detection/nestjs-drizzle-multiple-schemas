@@ -67,7 +67,7 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
   }
 
   async deleteAll() {
-    return this.db.delete(this.useSchema).execute();
+    return this.db.delete(this.useSchema).returning().execute();
   }
 
   private selectFields(fieldsToSelect: (keyof Entity)[]) {

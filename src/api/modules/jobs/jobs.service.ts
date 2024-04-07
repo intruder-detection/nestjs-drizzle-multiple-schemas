@@ -16,6 +16,10 @@ export class JobsService {
     return await this.jobDao.deleteById(id);
   }
 
+  async deleteJobs(): Promise<JobEntityInsert[]> {
+    return await this.jobDao.deleteAll();
+  }
+
   async getAllJobs(): Promise<JobEntity[]> {
     return this.jobDao.getAll();
   }

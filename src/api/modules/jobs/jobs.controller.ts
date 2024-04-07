@@ -30,4 +30,9 @@ export class JobsController {
   async deleteJob(@Param('id') jobId: string): Promise<Partial<JobResponseDto>[]> {
     return this.jobsService.deleteJob(jobId);
   }
+
+  @Delete()
+  async deleteAllJobs(): Promise<Partial<JobResponseDto>[]> {
+    return this.jobsService.deleteJobs();
+  }
 }

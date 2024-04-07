@@ -74,12 +74,16 @@ describe('Jobs e2e', () => {
       expect(existingJobs).toHaveLength(1);
       const existingJob = existingJobs.at(-1);
 
-      const { body: jobsUpdated } = await RequestUtils.performRequestAndExpectStatusOK<JobResponseDto[]>(app, {
-        method: HttpMethods.PUT,
-        endpoint: `/jobs/${existingJob.id}`,
-      }, {
-        jobName: 'This is a new name for the job',
-      });
+      const { body: jobsUpdated } = await RequestUtils.performRequestAndExpectStatusOK<JobResponseDto[]>(
+        app,
+        {
+          method: HttpMethods.PUT,
+          endpoint: `/jobs/${existingJob.id}`,
+        },
+        {
+          jobName: 'This is a new name for the job',
+        },
+      );
 
       expect(jobsUpdated).toHaveLength(1);
       const jobUpdated = jobsUpdated.at(-1);
@@ -102,6 +106,29 @@ describe('Jobs e2e', () => {
       expect(jobsDeleted).toHaveLength(1);
       const jobDeleted = jobsDeleted.at(-1);
       expect(jobDeleted.id).toEqual(existingJob.id);
+
+      existingJobs = await app.get(JobDao).getAll();
+      expect(existingJobs).toHaveLength(0);
+    });
+  });
+
+  describe('Delete all jobs', () => {
+    it('Should delete all jobs', async () => {
+      let existingJobs = await app.get(JobDao).getAll();
+      expect(existingJobs).toHaveLength(0);
+
+      const jobDao = app.get(JobDao);
+      await Promise.all([jobDao.insertNewRecord({ name: 'First job' }), jobDao.insertNewRecord({ name: 'Second job' })]);
+
+      existingJobs = await app.get(JobDao).getAll();
+      expect(existingJobs).toHaveLength(2);
+
+      const { body: jobsDeleted } = await RequestUtils.performRequestAndExpectStatusOK<JobResponseDto[]>(app, {
+        method: HttpMethods.DELETE,
+        endpoint: `/jobs`,
+      });
+
+      expect(jobsDeleted).toHaveLength(2);
 
       existingJobs = await app.get(JobDao).getAll();
       expect(existingJobs).toHaveLength(0);
