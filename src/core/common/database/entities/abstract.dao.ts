@@ -41,7 +41,7 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
 
   async getOneBySingleKey(key: keyof Entity, value: any, fieldsToSelect: (keyof Entity)[]): Promise<Partial<InferEntitySelected>> {
     const bySingleKey = await this.getBySingleKey(key, value, fieldsToSelect);
-    return bySingleKey && bySingleKey.length > 0 ? bySingleKey[0] : null;
+    return bySingleKey && bySingleKey.length > 0 ? bySingleKey.at(-1) : null;
   }
 
   async insertNewRecord(entity: Partial<InferEntityInsert>): Promise<Partial<InferEntitySelected>> {
@@ -50,7 +50,7 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
   }
 
   async deleteById(id: string) {
-    await this.db.delete(this.useSchema).where(eq(this.entity[id as string], id)).returning().execute();
+    return this.db.delete(this.useSchema).where(eq(this.entity[id as string], id)).returning().execute();
   }
 
   private selectFields(fieldsToSelect: (keyof Entity)[]) {

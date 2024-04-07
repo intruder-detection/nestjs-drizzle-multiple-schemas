@@ -13,7 +13,7 @@ export class JobsController {
   }
 
   @Delete(':id')
-  async deleteJob(@Param('id') jobId: string): Promise<void> {
+  async deleteJob(@Param('id') jobId: string): Promise<JobEntityInsert[]> {
     return this.jobsService.deleteJob(jobId);
   }
 

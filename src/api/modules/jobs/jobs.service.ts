@@ -12,7 +12,7 @@ export class JobsService {
     });
   }
 
-  async deleteJob(id: string): Promise<void> {
+  async deleteJob(id: string): Promise<JobEntityInsert[]> {
     return await this.jobDao.deleteById(id);
   }
 

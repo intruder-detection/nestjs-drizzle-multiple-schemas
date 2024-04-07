@@ -29,7 +29,7 @@ export class RequestUtils {
   static async performRequestAndExpectStatusOK<T = any>(
     app: INestApplication,
     endpointProperties: EndpointProperties,
-    payload: any,
+    payload?: any,
   ): Promise<SuperTestResponse<T>> {
     return RequestUtils.expectSpecificHttpCodeTest(app, endpointProperties, payload, HttpStatus.OK);
   }
@@ -37,7 +37,7 @@ export class RequestUtils {
   static async performRequestAndExpectStatusCreated<T = any>(
     app: INestApplication,
     endpointProperties: EndpointProperties,
-    payload: any,
+    payload?: any,
   ): Promise<SuperTestResponse<T>> {
     return RequestUtils.expectSpecificHttpCodeTest(app, endpointProperties, payload, HttpStatus.CREATED);
   }

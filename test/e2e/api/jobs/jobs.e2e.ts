@@ -3,7 +3,7 @@ import { HttpMethods } from '@test/utils/enums/http-methods.enum';
 import { INestApplication } from '@nestjs/common';
 import { TestUtils } from '@test/utils/test.utils';
 import { JobsModule } from '@api/modules/jobs/jobs.module';
-import { JobEntity } from '@core/common/database/entities/job/job.entity';
+import { JobEntity, JobEntityInsert } from '@core/common/database/entities/job/job.entity';
 
 describe('Jobs e2e', () => {
   let app: INestApplication;
@@ -30,6 +30,23 @@ describe('Jobs e2e', () => {
   });
 
   describe('List all jobs', () => {
+    it('Should list all jobs', async () => {
+      const { body: existingJobs } = await RequestUtils.performRequestAndExpectStatusOK<JobEntityInsert[]>(app, {
+        method: HttpMethods.GET,
+        endpoint: '/jobs'
+      });
+
+      expect(existingJobs).toHaveLength(1);
+
+      for (const job of existingJobs) {
+        expect(job).toMatchObject({
+          id: expect.any(String),
+          name: 'Test job name',
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        } satisfies JobEntity)
+      }
+    });
   });
 
   describe('Get job by id', () => {
