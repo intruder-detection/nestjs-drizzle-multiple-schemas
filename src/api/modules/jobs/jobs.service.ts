@@ -12,23 +12,23 @@ export class JobsService {
     });
   }
 
-  async deleteJob(id: string): Promise<JobEntityInsert[]> {
-    return await this.jobDao.deleteById(id);
-  }
-
-  async deleteJobs(): Promise<JobEntityInsert[]> {
-    return await this.jobDao.deleteAll();
-  }
-
-  async getAllJobs(): Promise<JobEntity[]> {
-    return this.jobDao.getAll();
-  }
-
   async getById(id: string): Promise<JobEntity> {
     return (await this.jobDao.getOneById(id, ['id', 'createdAt', 'updatedAt', 'name'])) as JobEntity;
   }
 
   async updateJob(id: string, newName: string): Promise<JobEntityInsert[]> {
     return this.jobDao.updateById(id, { name: newName })
+  }
+
+  async getAllJobs(): Promise<JobEntity[]> {
+    return this.jobDao.getAll();
+  }
+
+  async deleteJob(id: string): Promise<JobEntityInsert[]> {
+    return await this.jobDao.deleteById(id);
+  }
+
+  async deleteJobs(): Promise<JobEntityInsert[]> {
+    return await this.jobDao.deleteAll();
   }
 }
