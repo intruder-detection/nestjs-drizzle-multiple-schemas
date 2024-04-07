@@ -9,7 +9,7 @@ import { DatabaseHelper } from '@core/common/database/helpers/database.helper';
 
 export class TestUtils {
   /**
-   * Setup the NestJS application with the given modules.
+   * Set up the NestJS application with the given modules.
    */
   static async setupHttpContextApplication(modules: Type<unknown>[] | Type<unknown>, customSchemaName?: string) {
     this.setupTestEnvVariables(customSchemaName)
