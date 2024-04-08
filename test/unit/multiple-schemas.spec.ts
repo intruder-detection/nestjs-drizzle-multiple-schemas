@@ -27,14 +27,16 @@ describe('Multiple schemas', () => {
     expect(await DatabaseHelper.hasSchema(connectionString, 'schema2')).toBe(true);
   });
 
-  it('should not exist if not yet created', async () => {
-    const connectionString = DatabaseConfig.postgresqlConnection;
-    expect(await DatabaseHelper.hasSchema(connectionString, 'schemaaijadjsodsjodsjosdajoidsajdsajoi')).toBe(false);
-  });
+  describe('another schema', () => {
+    it('should not exist if not yet created', async () => {
+      const connectionString = DatabaseConfig.postgresqlConnection;
+      expect(await DatabaseHelper.hasSchema(connectionString, 'schemaaijadjsodsjodsjosdajoidsajdsajoi')).toBe(false);
+    });
 
-  it('should exist after being created', async () => {
-    await TestUtils.setupHttpContextApplication([DatabaseModule], 'schemaaijadjsodsjodsjosdajoidsajdsajoi');
-    const connectionString = DatabaseConfig.postgresqlConnection;
-    expect(await DatabaseHelper.hasSchema(connectionString, 'schemaaijadjsodsjodsjosdajoidsajdsajoi')).toBe(true);
-  });
+    it('should exist after being created', async () => {
+      await TestUtils.setupHttpContextApplication([DatabaseModule], 'schemaaijadjsodsjodsjosdajoidsajdsajoi');
+      const connectionString = DatabaseConfig.postgresqlConnection;
+      expect(await DatabaseHelper.hasSchema(connectionString, 'schemaaijadjsodsjodsjosdajoidsajdsajoi')).toBe(true);
+    });
+  })
 });
