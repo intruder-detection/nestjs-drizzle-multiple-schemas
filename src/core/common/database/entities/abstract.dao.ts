@@ -20,17 +20,17 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
     return this.db.select().from(this.useSchema).execute();
   }
 
-  async getById(id: string, fieldsToSelect: (keyof Entity)[]): Promise<Partial<InferEntitySelected>[]> {
+  async getById(id: string, fieldsToSelect?: (keyof Entity)[]): Promise<Partial<InferEntitySelected>[]> {
     const selectedFields = this.selectFields(fieldsToSelect);
     return this.db.select(selectedFields).from(this.useSchema).where(eq(this.entity['id'], id));
   }
 
-  async getOneById(id: string, fieldsToSelect: (keyof Entity)[]): Promise<Partial<InferEntitySelected>> {
+  async getOneById(id: string, fieldsToSelect?: (keyof Entity)[]): Promise<Partial<InferEntitySelected>> {
     const res = await this.getById(id, fieldsToSelect);
     return res && res.length > 0 ? res[0] : null;
   }
 
-  async getBySingleKey(key: keyof Entity, value: any, fieldsToSelect: (keyof Entity)[]): Promise<Partial<InferEntitySelected>[]> {
+  async getBySingleKey(key: keyof Entity, value: any, fieldsToSelect?: (keyof Entity)[]): Promise<Partial<InferEntitySelected>[]> {
     const selectedFields = this.selectFields(fieldsToSelect);
     return await this.db
       .select(selectedFields)
@@ -39,7 +39,7 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
       .execute();
   }
 
-  async getOneBySingleKey(key: keyof Entity, value: any, fieldsToSelect: (keyof Entity)[]): Promise<Partial<InferEntitySelected>> {
+  async getOneBySingleKey(key: keyof Entity, value: any, fieldsToSelect?: (keyof Entity)[]): Promise<Partial<InferEntitySelected>> {
     const bySingleKey = await this.getBySingleKey(key, value, fieldsToSelect);
     return bySingleKey && bySingleKey.length > 0 ? bySingleKey.at(-1) : null;
   }
@@ -70,7 +70,10 @@ export class AbstractDao<TSchema extends Record<string, unknown>, Entity extends
     return this.db.delete(this.useSchema).returning().execute();
   }
 
-  private selectFields(fieldsToSelect: (keyof Entity)[]) {
+  private selectFields(fieldsToSelect?: (keyof Entity)[]) {
+    if (!fieldsToSelect) {
+      return undefined;
+    }
     return fieldsToSelect.reduce((acc, fieldToSelect) => {
       acc[fieldToSelect as string] = this.entity[fieldToSelect];
       return acc;
