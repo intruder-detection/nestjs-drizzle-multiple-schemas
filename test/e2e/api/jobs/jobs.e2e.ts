@@ -89,6 +89,9 @@ describe('Jobs e2e', () => {
       const jobUpdated = jobsUpdated.at(-1);
       expect(jobUpdated.id).toEqual(existingJob.id);
       expect(jobUpdated.name).toEqual('This is a new name for the job');
+      // Verifies that createdAt was unchanged BUT updatedAt was changed
+      expect(new Date(jobUpdated.createdAt).getTime()).toEqual(existingJob.createdAt.getTime());
+      expect(new Date(jobUpdated.updatedAt).getTime()).not.toEqual(existingJob.updatedAt.getTime());
     });
   });
 

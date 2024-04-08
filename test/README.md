@@ -1,4 +1,4 @@
-The tests are trying to showcase the main reason for this repository to have been created: have multiple schemas inside the same database using Drizzle ORM.
+The tests are trying to showcase the main reason for this repository to have been created: create and use multiple schemas inside the same database using Drizzle ORM.
 
 # Run
 
