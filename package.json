@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build --config nest-cli.json",
-    "start": "env DB_USER=\"drizzle-orm\" env DB_PASSWORD=\"pass\" env DB_HOST_NAME=\"localhost\" env DB_PORT=\"5432\" env DB_NAME=\"drizzle-orm\" env DB_SCHEMA_NAME=\"schema_1\" nest start --config nest-cli.json",
+    "start": "env DB_USER=\"drizzle-orm\" env DB_PASSWORD=\"pass\" env DB_HOST_NAME=\"localhost\" env DB_PORT=\"5432\" env DB_NAME=\"drizzle-orm\" env DB_SCHEMA_NAME=\"schema_1\" env TRACKING_ID_HEADER=\"tracking_id_test\" nest start --config nest-cli.json",
     "start:dev": "nest start --watch --config nest-cli.json",
     "start:prod": "node dist/main --config nest-cli.json",
     "test": "vitest --run -c test/vitest.config.mts"

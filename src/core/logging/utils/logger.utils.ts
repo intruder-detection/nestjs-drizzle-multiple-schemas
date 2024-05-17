@@ -17,7 +17,6 @@ export class LoggerUtils {
    * Uses the TRACKING_ID_HEADER, if present, otherwise generates a random UUID.
    */
   static generateLoggingIdForHttpContext(req: IncomingMessage): string {
-    // TODO: Get TRACKING_ID_HEADER from config
     return  (req?.headers?.[process.env.TRACKING_ID_HEADER] as string) || randomUUID();
   }
 

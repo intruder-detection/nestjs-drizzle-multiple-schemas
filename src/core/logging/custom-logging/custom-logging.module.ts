@@ -5,6 +5,8 @@ import { CustomDrizzleLoggingService } from '@core/logging/custom-logging/custom
 import { CUSTOM_LOGGING_OPTIONS_PROVIDER } from '@core/logging/custom-logging/custom-logging-options.interface';
 import { CustomLoggingService } from '@core/logging/custom-logging/custom-logging.service';
 import { LoggerUtils } from '@core/logging/utils/logger.utils';
+import { ConfigModule } from '@nestjs/config';
+import { LoggingConfig } from '@core/logging/config/logging.config';
 
 @Module({})
 export class CustomLoggingModule {
@@ -12,6 +14,7 @@ export class CustomLoggingModule {
     return {
       module: CustomLoggingModule,
       providers: [
+        LoggingConfig,
         {
           provide: CUSTOM_LOGGING_OPTIONS_PROVIDER,
           useValue: loggingOptions,
@@ -20,6 +23,9 @@ export class CustomLoggingModule {
         CustomDrizzleLoggingService,
       ],
       imports: [
+        ConfigModule.forRoot({
+          validate: LoggingConfig.validateConfiguration,
+        }),
         // SEE: https://papooch.github.io/nestjs-cls/api/module-options
         ClsModule.forRoot({
           global: true,
