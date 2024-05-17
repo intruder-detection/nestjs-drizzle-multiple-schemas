@@ -3,12 +3,16 @@ import { BaseLogger } from 'pino';
 import { PrettyOptions } from 'pino-pretty';
 import { CUSTOM_LOGGING_OPTIONS_PROVIDER } from '@core/logging/custom-logging/custom-logging-options.interface';
 import { LoggerUtils } from '@core/logging/utils/logger.utils';
+import { ClsService } from 'nestjs-cls';
 
 @Injectable()
 export class CustomLoggingService implements LoggerService {
   private readonly logger: BaseLogger;
 
-  constructor(@Inject(CUSTOM_LOGGING_OPTIONS_PROVIDER) private options: PrettyOptions) {
+  constructor(
+    @Inject(CUSTOM_LOGGING_OPTIONS_PROVIDER) private options: PrettyOptions,
+    private readonly cls: ClsService,
+  ) {
     this.logger = LoggerUtils.pinoPrettyLogger(options);
   }
 
@@ -40,6 +44,7 @@ export class CustomLoggingService implements LoggerService {
     return {
       msg: message,
       context,
+      reqId: this.cls.getId(),
     };
   }
 }
